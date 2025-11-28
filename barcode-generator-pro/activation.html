@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Activation - The Backer</title>
+    <link rel="stylesheet" href="activation.css">
+</head>
+
+<body>
+    <div class="activation-container">
+        <div class="activation-box">
+            <div class="logo-section">
+                <img src="the-backer-logo.png" alt="The Backer Logo" class="activation-logo">
+                <h1>The Backer</h1>
+                <p class="subtitle">Barcode Generator</p>
+            </div>
+            
+            <div class="activation-content">
+                <h2>Activate Your Product</h2>
+                <p class="instruction">Enter your 16-character serial key to activate</p>
+                
+                <div class="key-input-group">
+                    <input 
+                        type="text" 
+                        id="serialInput" 
+                        placeholder="XXXX-XXXXXX-XXXX"
+                        maxlength="16"
+                        autocomplete="off"
+                        spellcheck="false"
+                    />
+                    <div class="counter-text">
+                        <span class="char-counter"> <span id="charCount">0</span>/16</span></span>
+                    </div>
+                   
+                </div>
+                
+                <button id="activateBtn" onclick="activate()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+                    </svg>
+                    Activate Product
+                </button>
+                
+                
+                <div id="error" class="error-message"></div>
+                <div id="success" class="success-message"></div>
+                
+                <div class="info-section">
+                    <div class="info-item">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                        </svg>
+                        <span>Serial key format: XXXX-XXXXXX-XXXX</span>
+                    </div>
+                    <div class="info-item">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                        </svg>
+                        <span>Activation required only once</span>
+                    </div>
+                    <div class="info-item">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                        </svg>
+                        <span>Works offline after activation</span>
+                    </div>
+                    <div class="info-item">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                        </svg>
+                        <span>Get your <b>Key</b> From <b>Go Save Site</b> : +265 991 972 336 | +265 888 333 673</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <p>&copy; 2026 The Backer. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="activation.js"></script>
+</body>
+</html>
