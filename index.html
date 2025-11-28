@@ -1,0 +1,218 @@
+<script>
+if (localStorage.getItem("isActivated") !== "yes") {
+    window.location.href = "activation.html";
+}
+</script>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon"  href="assets/icon.ico">
+    <title>The Backer Barcode Generator</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+    <div class="header-content">
+        <div class="logo">
+            <img src="the-backer-logo.png" alt="">
+            <div class="logo-text">
+                <h1>The Backer</h1>
+                <p>Barcode Generator</p>
+            </div>
+        </div>
+        <div class="header-buttons">
+            <button id="resetBtn" class="reset-btn-header">Reset History</button>
+            
+            <button id="viewHistoryBtn" class="history-btn">View History</button>
+        </div>
+    </div>
+</header>
+
+<div class="main-content">
+    <div class="container">
+
+        <!-- MAIN FORM -->
+        <div id="formView">
+            <div class="progress-bar">
+                <div class="progress-step active" data-step="1">
+                    <div class="step-number">1</div>
+                    <span>Mode</span>
+                </div>
+                <div class="progress-line"></div>
+                <div class="progress-step" data-step="2">
+                    <div class="step-number">2</div>
+                    <span>Type</span>
+                </div>
+                <div class="progress-line"></div>
+                <div class="progress-step" data-step="3">
+                    <div class="step-number">3</div>
+                    <span>Products</span>
+                </div>
+                <div class="progress-line"></div>
+                <div class="progress-step" data-step="4">
+                    <div class="step-number">4</div>
+                    <span>Review</span>
+                </div>
+            </div>
+
+            <!-- STEP 1: Numbering Mode -->
+            <div class="form-step active" data-step="1">
+                <h2>Select Numbering Mode</h2>
+                <div class="button-group">
+                    <button id="autoMode" class="toggle-btn active">
+                        <span class="btn-icon"><img src="assets/auto.png" alt="" width="18px"></span>
+                        Auto
+                    </button>
+                    <button id="manualMode" class="toggle-btn">
+                        <span class="btn-icon"><img src="assets/edit.png" alt="" width="18px"></span>
+                        Manual
+                    </button>
+                </div>
+
+                <div id="manualInput" class="hidden input-group">
+                    <label>Starting Product Number:</label>
+                    <input type="number" id="startNumber" placeholder="e.g. 00010">
+                </div>
+
+                <div id="autoDisplay">
+                    <div class="info-box">
+                        <p>Next Number: <strong id="nextNumber">00001</strong></p>
+                    </div>
+                </div>
+
+                <div class="step-actions">
+                    <button class="btn-next" onclick="nextStep()">Next Step →</button>
+                </div>
+            </div>
+
+            <!-- STEP 2: Barcode Type -->
+            <div class="form-step" data-step="2">
+                <h2>Select Barcode Type</h2>
+                <div class="button-group">
+                    <button id="upcType" class="toggle-btn active">
+                        <span class="btn-icon">🏷</span>
+                        UPC-A<br><small>(12-digit)</small>
+                    </button>
+                    <button id="eanType" class="toggle-btn">
+                        <span class="btn-icon">🏷</span>
+                        EAN-13<br><small>(13-digit)</small>
+                    </button>
+                </div>
+
+                <div class="step-actions">
+                    <button class="btn-prev" onclick="prevStep()">← Previous</button>
+                    <button class="btn-next" onclick="nextStep()">Next Step →</button>
+                </div>
+            </div>
+
+            <!-- STEP 3: Add Products -->
+            <div class="form-step" data-step="3">
+                <h2>Add Products</h2>
+                <p class="step-desc">Add product names to generate barcodes</p>
+
+                <div class="product-list" id="productList">
+                    <!-- Products will be added here -->
+                </div>
+
+                <button id="addProductBtn" class="add-product-btn">
+                    <img src="assets/add.png" alt="" width="18px"> Add New Product
+                </button>
+
+                <div class="step-actions">
+                    <button class="btn-prev" onclick="prevStep()">← Previous</button>
+                    <button class="btn-next" onclick="nextStep()">Review & Generate →</button>
+                </div>
+            </div>
+
+            <!-- STEP 4: Review -->
+            <div class="form-step" data-step="4">
+                <h2>Review & Generate</h2>
+                
+                <div class="review-summary">
+                    <div class="review-row">
+                        <div class="review-col">
+                            <span>Numbering Mode:</span>
+                            <strong id="reviewMode">Auto</strong>
+                        </div>
+                        <div class="review-col">
+                            <span>Barcode Type:</span>
+                            <strong id="reviewType">UPC-A</strong>
+                        </div>
+                    </div>
+                    <div class="review-row">
+                        <div class="review-col">
+                            <span>Total Products:</span>
+                            <strong id="reviewCount">0</strong>
+                        </div>
+                        <div class="review-col">
+                            <span>Starting Number:</span>
+                            <strong id="reviewStart">00001</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="reviewProducts" class="review-products"></div>
+
+                <div class="step-actions">
+                    <button class="btn-prev" onclick="prevStep()">← Previous</button>
+                    <button id="generateBtn" class="generate-btn">Generate Barcodes</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- HISTORY VIEW -->
+        <div id="historyView" class="hidden">
+            <div class="history-header">
+                <h2>Barcode History</h2>
+                <div class="history-controls">
+                    <input type="text" id="searchInput" placeholder="Search by product name..." class="search-input">
+                    <div class="view-toggle">
+                        <button id="gridViewBtn" class="view-btn active" title="Grid View">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <rect x="3" y="3" width="7" height="7" rx="1"/>
+                                <rect x="14" y="3" width="7" height="7" rx="1"/>
+                                <rect x="3" y="14" width="7" height="7" rx="1"/>
+                                <rect x="14" y="14" width="7" height="7" rx="1"/>
+                            </svg>
+                        </button>
+                        <button id="listViewBtn" class="view-btn" title="List View">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <rect x="3" y="4" width="18" height="2" rx="1"/>
+                                <rect x="3" y="11" width="18" height="2" rx="1"/>
+                                <rect x="3" y="18" width="18" height="2" rx="1"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <button id="backToFormBtn" class="back-btn">
+                        <img src="assets/add.png" alt="" width="18px"> CREATE NEW
+                    </button>
+                    <!--<a href="index.html"><button class="back-btn">+ Add New</button></a> -->
+                </div>
+            </div>
+            <div id="historyList" class="history-grid">
+                <!-- History items will be loaded here -->
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="toast" aria-live="polite"></div>
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="footer-content">
+        <p>&copy; 2026 The Backer. All rights reserved.</p>
+        <p>Professional Barcode Generation System</p>
+    </div>
+</footer>
+
+<!-- Barcode Generator Library -->
+<script src="bwip-js.min.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
